@@ -10,7 +10,8 @@ python = sys.executable
 
 class connection:
     def __init__(self,) -> None:
-        self.cur = None
+      self.conn = None 
+      self.cur = None 
 
     def con(self,db_name,db_path = None):
         self.db_name = db_name 
@@ -23,33 +24,39 @@ class connection:
                 self.conn = sqlite3.connect(self.db_path) 
                 self.cur = self.conn.cursor()
                 print("Success")
+                return self.cur
              else:
                  print("The file is not db file: ")  
                  os.execl(python, python, *sys.argv) 
+        elif self.db_path == None:
+            self.connect = sqlite3.connect(db_name) 
+            self.cur1 = self.connect.cursor() 
+            return self.cur1
 
         else:
-            name_con =  sqlite3.connect(self.db_name)  
-            self.cur = name_con.cursor()
-            print("dONE")
+            print("The entered value if nether path nor value please enter a specific path or value.") 
+    def add_user(self,user_name,user_id,type_of_con):
+         if type_of_con == self.cur:
+            self.table_name = input("Enter the name of table: ")
+            self.user_id = user_id 
+            self.user_name = user_name 
+            self.cur.execute(f"CREATE TABLE IF NOT EXISTS {self.table_name}({self.user_name,self.user_id})") 
+            self.data = [self.user_name,self.user_id] 
+            self.cur.executemany(f"INSERT INTO {self.table_name} VALUE(?,?) ",self.data)  
+            print("Success")
+         else:
+             self.table_name = input()
+             if type_of_con == self.cur1:
+                 self.cur1.executemany(f"INSERT INTO {self.table_name} VALUE(?,?)",self.data) 
+                 print("Success")
 
-    def action(self,action):
-            self.data = ['ALICE','mega']
-            self.action = action 
-            if self.action is not None:
-                self.name = input("Enter Table name: ")
-                self.cur.execute(f"CREATE TABLE IF NOT EXISTS movie(?,?,?)",self.data) 
-                print("Done")
-            else:
-                pass 
-    # def add_user(self,user_name,user_id):
-    #     if self.cur is None:
-    #         print("Can't connect") 
-        
-    #     insert_value = 
-
-db_name = "Hello.db" 
+db_name = input()
 
 Con = connection() 
 
 connect = Con.con(db_name=db_name)  
-action = Con.action(True)
+type_of_con = connect 
+user_name = "Shivam"
+user_id = 98754
+
+Con.add_user(user_name=user_name,user_id=user_id,type_of_con=type_of_con)   
