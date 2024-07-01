@@ -1,31 +1,55 @@
 import sqlite3 
-import os 
+import os
+import sys 
+def file_exe(file_name):
+    file_name_exe = list(file_name) 
+    return file_name_exe[:-3] 
+
+python = sys.executable
 
 
-class Connection: 
-    def __init__(self,db_path) -> None:
+class connection:
+    def __init__(self,) -> None:
+        self.cur = None
+
+    def con(self,db_name,db_path = None):
+        self.db_name = db_name 
         self.db_path = db_path 
-    
-    def con(self,action,db_name = None,db_path =None):
-        self.db_path = db_path 
-        self.action = action 
         if self.db_path != None:
-            os.chdir(self.db_path) 
-            con = sqlite3.connect(self.db_path) 
-            cur = con.cursor() 
-            if self.action == True:
-                self.table_name = input("Enter Table_name: ") 
-                self._amount_of_col = int(input("Enter no of colum: ")) 
-                cur.execute(f"CREATE TABLE IF NOT EXISTS {self.table_name}  ") 
-                for i in range(self._amount_of_col):
-                    col = input("Enter colum value:  ") 
-                    cur.executemany(f"INSERT INTO {self.db_path} VALUES (?,?,?) ",col)
-                    con.commit()
-                    con.close()
+             os.chdir(self.db_path)
+             os.listdir()
+             file_name = input("Enter file Name: ") 
+             if file_exe(file_name) == ".db":
+                self.conn = sqlite3.connect(self.db_path) 
+                self.cur = self.conn.cursor()
+                print("Success")
+             else:
+                 print("The file is not db file: ")  
+                 os.execl(python, python, *sys.argv) 
+
+        else:
+            name_con =  sqlite3.connect(self.db_name)  
+            self.cur = name_con.cursor()
+            print("dONE")
+
+    def action(self,action):
+            self.data = ['ALICE','mega']
+            self.action = action 
+            if self.action is not None:
+                self.name = input("Enter Table name: ")
+                self.cur.execute(f"CREATE TABLE IF NOT EXISTS movie(?,?,?)",self.data) 
+                print("Done")
             else:
                 pass 
+    # def add_user(self,user_name,user_id):
+    #     if self.cur is None:
+    #         print("Can't connect") 
+        
+    #     insert_value = 
 
+db_name = "Hello.db" 
 
-c = Connection(r"E:\web") 
+Con = connection() 
 
-c.con(True,r"E:\web") 
+connect = Con.con(db_name=db_name)  
+action = Con.action(True)
